@@ -1,0 +1,57 @@
+<template name="CT_index_bootstrap3">
+  <div>{{> Template.dynamic template=template }}</div>
+</template>
+
+<template name="CT_index_bootstrap3_default">
+  {{#with meta}}
+    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
+    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
+    {{#if help}}<small>{{{help}}}</small>{{/if}}
+    <hr/>
+  {{/with}}
+
+  <ul>
+    {{#if ct.pathTo.create}}
+      <li><a href="{{pathFor route=ct.pathTo.create}}" title="{{ct.labels.linkCreate}}">{{ct.labels.linkCreate}}</a></li>
+    {{/if}}
+  </ul>
+
+  {{#with items}}
+    {{#if total}}
+      <table width="100%" border="1">
+        <thead>
+          <tr>
+            {{#each ct.fields}}
+              <th abbr="{{ key }}">{{value}}</th>
+            {{/each}}
+            <th abbr="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each cursor}}
+            <tr>
+              {{#each ct.fields}}
+                <td abbr="{{value}}">{{ctGetFieldValue .. key}}</td>
+              {{/each}}
+              <td>
+                {{#if ct.pathTo.read}}
+                  <a href="{{pathFor route=ct.pathTo.read}}" title="{{ct.labels.linkView}}">{{ct.labels.linkView}}</a>
+                {{/if}}
+                {{#if ct.pathTo.update}}
+                  <a href="{{pathFor route=ct.pathTo.update}}" title="{{ct.labels.linkEdit}}">{{ct.labels.linkEdit}}</a>
+                {{/if}}
+                {{#if ct.pathTo.delete}}
+                  <a href="{{pathFor route=ct.pathTo.delete}}" title="{{ct.labels.linkDelete}}">{{ct.labels.linkDelete}}</a>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <p>{{ct.labels.totalItemsPrefix}} <strong>{{total}}</strong> {{ct.labels.totalItemsSuffix}}</p>
+    {{else}}
+      <p>{{ct.labels.noItemsFound}}</p>
+    {{/if}}
+  {{/with}}
+</template>
+
