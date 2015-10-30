@@ -9,6 +9,7 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@0.9.3', 'METEOR@0.9.4', 'METEOR@1.0']);
 
   var dependencies = [
+    'templating',
     'tooit:content-types'
   ];
   api.use(dependencies);
