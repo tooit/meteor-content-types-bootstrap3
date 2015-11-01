@@ -7,15 +7,10 @@ This file shows the templates provided by the "default" theme. This could be use
 - [Introduction](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#Introduction)
 - [Shared template helpers](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#shared_template_helpers)
 - [Templates](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#templates)
-  - [CT_index_bootstrap3](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_index_bootstrap3)
   - [CT_index_bootstrap3_default](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_index_bootstrap3_default)
-  - [CT_create_bootstrap3](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_create_bootstrap3)
   - [CT_create_bootstrap3_default](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_create_bootstrap3_default)
-  - [CT_read_bootstrap3](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_read_bootstrap3)
   - [CT_read_bootstrap3_default](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_read_bootstrap3_default)
-  - [CT_update_bootstrap3](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_update_bootstrap3)
   - [CT_update_bootstrap3_default](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_update_bootstrap3_default)
-  - [CT_delete_bootstrap3](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_delete_bootstrap3)
   - [CT_delete_bootstrap3_default](https://github.com/tooit/meteor-content-types/blob/master/TEMPLATES_default.md#ct_delete_bootstrap3_default)
 
 ## Introduction
@@ -41,76 +36,91 @@ The following keys will be available on all display templates (not on wrapper te
 
 List of Meteor templates provided with the default theme.
 
-### CT_index_bootstrap3
-
-The wrapper template for ``Index`` endpoint.
-
-```handlebars
-<template name="CT_index_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-```
-
-#### Template helpers
-
-- ``template``: a reactive var containing the name of the display to be rendered. You could update this display without running the route again by doing ``MyAwesomeContentType.setDisplay('index', 'new-display');``.
-
 ### CT_index_bootstrap3_default
 
 The default display for ``Index`` endpoint.
 
 ```handlebars
 <template name="CT_index_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
-
-  <ul>
-    {{#if ct.pathTo.create}}
-      <li><a href="{{pathFor route=ct.pathTo.create}}" title="{{ct.labels.linkCreate}}">{{ct.labels.linkCreate}}</a></li>
-    {{/if}}
-  </ul>
-
-  {{#with items}}
-    {{#if total}}
-      <table width="100%" border="1">
-        <thead>
-          <tr>
-            {{#each ct.fields}}
-              <th abbr="{{ key }}">{{value}}</th>
-            {{/each}}
-            <th abbr="actions"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each cursor}}
-            <tr>
-              {{#each ct.fields}}
-                <td abbr="{{value}}">{{ctGetFieldValue .. key}}</td>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#if ct.pathTo.create}}
+          <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-primary" title="{{ct.labels.linkCreate}}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
+    {{#with items}}
+      {{#if total}}
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                {{#each ct.fields}}
+                  <th abbr="{{ key }}">{{value}}</th>
+                {{/each}}
+                <th abbr="actions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each cursor}}
+                <tr>
+                  {{#each ct.fields}}
+                    <td abbr="{{value}}">{{ctGetFieldValue .. key}}</td>
+                  {{/each}}
+                  <td abbr="Actions">
+                    {{#if ct.pathTo.update}}
+                      <a href="{{pathFor route=ct.pathTo.update}}" class="btn btn-primary btn-sm" title="{{ct.labels.linkEdit}}">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                      </a>
+                    {{/if}}
+                    {{#if ct.pathTo.read}}
+                      <a href="{{pathFor route=ct.pathTo.read}}" class="btn btn-default btn-sm" title="{{ct.labels.linkView}}">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      </a>
+                    {{/if}}
+                    {{#if ct.pathTo.delete}}
+                      <a href="{{pathFor route=ct.pathTo.delete}}" class="btn btn-link btn-sm" title="{{ct.labels.linkDelete}}">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                      </a>
+                    {{/if}}
+                  </td>
+                </tr>
               {{/each}}
-              <td>
-                {{#if ct.pathTo.read}}
-                  <a href="{{pathFor route=ct.pathTo.read}}" title="{{ct.labels.linkView}}">{{ct.labels.linkView}}</a>
-                {{/if}}
-                {{#if ct.pathTo.update}}
-                  <a href="{{pathFor route=ct.pathTo.update}}" title="{{ct.labels.linkEdit}}">{{ct.labels.linkEdit}}</a>
-                {{/if}}
-                {{#if ct.pathTo.delete}}
-                  <a href="{{pathFor route=ct.pathTo.delete}}" title="{{ct.labels.linkDelete}}">{{ct.labels.linkDelete}}</a>
-                {{/if}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <p>{{ct.labels.totalItemsPrefix}} <strong>{{total}}</strong> {{ct.labels.totalItemsSuffix}}</p>
-    {{else}}
-      <p>{{ct.labels.noItemsFound}}</p>
-    {{/if}}
-  {{/with}}
+            </tbody>
+          </table>
+        </div>
+      {{/if}}
+    {{/with}}
+    <div class="panel-footer">
+      {{#if items.total}}
+        <div class="pull-right">
+          {{#if ct.pathTo.create}}
+            <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-primary" title="{{ct.labels.linkCreate}}">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+          {{#if meta.help}}
+            <a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+        </div>
+        <h5>{{ct.labels.totalItemsPrefix}} <strong>{{items.total}}</strong> {{ct.labels.totalItemsSuffix}}</h5>
+      {{else}}
+        <h5>{{ct.labels.noItemsFound}}</h5>
+      {{/if}}
+    </div>
+  </div>
 </template>
 ```
 
@@ -120,40 +130,40 @@ The default display for ``Index`` endpoint.
 - ``item.total``: total document count.
 - And the rest of common helpers shared by all Index+CRUD endpoints.
 
-### CT_create_bootstrap3
-
-The wrapper template for ``Create`` endpoint.
-
-```handlebars
-<template name="CT_create_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-```
-
-#### Template helpers
-
-- ``template``: a reactive var containing the name of the display to be rendered. You could update this display without running the route again by doing ``MyAwesomeContentType.setDisplay('index', 'new-display');``.
-
 ### CT_create_bootstrap3_default
 
 The default display for ``Create`` endpoint.
 
 ```handlebars
 <template name="CT_create_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
-
-  {{> quickForm collection=formCollection id=formId type=formType}}
-
-  <ul>
-    {{#if ct.pathTo.index}}
-      <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
-    {{/if}}
-  </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
+    {{#autoForm collection=formCollection id=formId type=formType}}
+      <div class="panel-body">
+        {{> afQuickFields}}
+      </div>
+      <div class="panel-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-link">Cancel</a>
+        <button type="reset" class="btn btn-link">Reset</button>
+      </div>
+    {{/autoForm}}
+  </div>
 </template>
 ```
 
@@ -164,65 +174,52 @@ The default display for ``Create`` endpoint.
 - ``formType``: the form type to be used by autoform package.
 - And the rest of common helpers shared by all Index+CRUD endpoints.
 
-### CT_read_bootstrap3
-
-The wrapper template for ``Read`` endpoint.
-
-```handlebars
-<template name="CT_read_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-```
-
-#### Template helpers
-
-- ``template``: a reactive var containing the name of the display to be rendered. You could update this display without running the route again by doing ``MyAwesomeContentType.setDisplay('index', 'new-display');``.
-
 ### CT_read_bootstrap3_default
 
 The default display for ``Read`` endpoint.
 
 ```handlebars
 <template name="CT_read_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
-
-  {{#with item}}
-    <table border="1">
-      <thead>
-        <tr>
-          <th>{{ct.labels.thKey}}</th>
-          <th>{{ct.labels.thLabel}}</th>
-          <th>{{ct.labels.thValue}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each ct.fields}}
-          <tr>
-            <td>{{key}}</td>
-            <td>{{value}}</td>
-            <td>{{ctGetFieldValue .. key}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-
-    <ul>
-      {{#if ct.pathTo.update}}
-        <li><a href="{{pathFor route=ct.pathTo.update}}" title="{{ct.labels.linkEdit}}">{{ct.labels.linkEdit}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.delete}}
-        <li><a href="{{pathFor route=ct.pathTo.delete}}" title="{{ct.labels.linkDelete}}">{{ct.labels.linkDelete}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.index}}
-        <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
-      {{/if}}
-    </ul>
-  {{/with}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#with item}}
+          {{#if ct.pathTo.update}}
+            <a href="{{pathFor route=ct.pathTo.update}}" class="btn btn-primary" title="{{ct.labels.linkEdit}}">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+        {{/with}}
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if ct.pathTo.create}}
+          <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-default" title="{{ct.labels.linkCreate}}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
+    {{#with item}}
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          {{#each ct.fields}}
+          <dt>{{value}} <span class="text-muted small">({{key}})</span></dt>
+          <dd>{{ctGetFieldValue .. key}}</dd>
+          {{/each}}
+        </dl>
+      </div>
+    {{/with}}
+  </div>
 </template>
 ```
 
@@ -231,50 +228,55 @@ The default display for ``Read`` endpoint.
 - ``item``: the mongo document about to be deleted.
 - And the rest of common helpers shared by all Index+CRUD endpoints.
 
-### CT_update_bootstrap3
-
-The wrapper template for ``Update`` endpoint.
-
-```handlebars
-<template name="CT_update_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-```
-
-#### Template helpers
-
-- ``template``: a reactive var containing the name of the display to be rendered. You could update this display without running the route again by doing ``MyAwesomeContentType.setDisplay('index', 'new-display');``.
-
 ### CT_update_bootstrap3_default
 
 The default display for ``Update`` endpoint.
 
 ```handlebars
 <template name="CT_update_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#with item}}
+          {{#if ct.pathTo.read}}
+            <a href="{{pathFor route=ct.pathTo.read}}" class="btn btn-primary" title="{{ct.labels.linkView}}">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+        {{/with}}
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if ct.pathTo.create}}
+          <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-default" title="{{ct.labels.linkCreate}}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
 
-  {{#with item}}
-    {{> quickForm collection=formCollection id=formId type=formType doc=this}}
-  {{/with}}
-
-  <ul>
-    {{#with item}}
-      {{#if ct.pathTo.read}}
-        <li><a href="{{pathFor route=ct.pathTo.read}}" title="{{ct.labels.linkView}}">{{ct.labels.linkView}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.create}}
-        <li><a href="{{pathFor route=ct.pathTo.create}}" title="{{ct.labels.linkCreate}}">{{ct.labels.linkCreate}}</a></li>
-      {{/if}}
-    {{/with}}
-    {{#if ct.pathTo.index}}
-      <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
+    {{#if item}}
+      {{#autoForm collection=formCollection id=formId type=formType doc=item}}
+        <div class="panel-body">
+          {{> afQuickFields}}
+        </div>
+        <div class="panel-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-link">Cancel</a>
+          <button type="reset" class="btn btn-link">Reset</button>
+        </div>
+      {{/autoForm}}
     {{/if}}
-  </ul>
+  </div>
 </template>
 ```
 
@@ -283,53 +285,57 @@ The default display for ``Update`` endpoint.
 - ``item``: the mongo document about to be updated.
 - And the rest of common helpers shared by all Index+CRUD endpoints.
 
-### CT_delete_bootstrap3
-
-The wrapper template for ``Delete`` endpoint.
-
-```handlebars
-<template name="CT_delete_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-```
-
-#### Template helpers
-
-- ``template``: a reactive var containing the name of the display to be rendered. You could update this display without running the route again by doing ``MyAwesomeContentType.setDisplay('index', 'new-display');``.
-
 ### CT_delete_bootstrap3_default
 
 The default display for ``Create`` endpoint.
 
 ```handlebars
 <template name="CT_delete_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#with item}}
+          {{#if ct.pathTo.read}}
+            <a href="{{pathFor route=ct.pathTo.read}}" class="btn btn-primary" title="{{ct.labels.linkView}}">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+          {{#if ct.pathTo.update}}
+            <a href="{{pathFor route=ct.pathTo.update}}" class="btn btn-primary" title="{{ct.labels.linkEdit}}">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+        {{/with}}
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if ct.pathTo.create}}
+          <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-default" title="{{ct.labels.linkCreate}}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
 
-  {{#with item}}
-    {{ct.labels.deletePrefix}} <strong>{{title}}</strong>.<br> {{ct.labels.deleteSuffix}}
-    {{#quickRemoveButton collection=formCollection _id=_id}}
-      {{ct.labels.confirmOk}}
-    {{/quickRemoveButton}}
-  {{/with}}
-
-  <ul>
     {{#with item}}
-      {{#if ct.pathTo.read}}
-        <li><a href="{{pathFor route=ct.pathTo.read}}" title="{{ct.labels.linkView}}">{{ct.labels.linkView}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.update}}
-        <li><a href="{{pathFor route=ct.pathTo.update}}" title="{{ct.labels.linkEdit}}">{{ct.labels.linkEdit}}</a></li>
-      {{/if}}
+      <div class="panel-body">
+        <h5>{{ct.labels.deletePrefix}} <strong>{{title}}</strong>.</h5>
+        <h4>{{ct.labels.deleteSuffix}}</h4>
+        {{#quickRemoveButton collection=formCollection _id=_id class="btn btn-danger"}}
+          {{ct.labels.confirmOk}}
+        {{/quickRemoveButton}}
+      </div>
     {{/with}}
-    {{#if ct.pathTo.index}}
-      <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
-    {{/if}}
-  </ul>
+  </div>
 </template>
 ```
 
