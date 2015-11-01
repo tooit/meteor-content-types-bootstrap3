@@ -1,45 +1,42 @@
-<template name="CT_read_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-
 <template name="CT_read_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
-
-  {{#with item}}
-    <table border="1">
-      <thead>
-        <tr>
-          <th>{{ct.labels.thKey}}</th>
-          <th>{{ct.labels.thLabel}}</th>
-          <th>{{ct.labels.thValue}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each ct.fields}}
-          <tr>
-            <td>{{key}}</td>
-            <td>{{value}}</td>
-            <td>{{ctGetFieldValue .. key}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-
-    <ul>
-      {{#if ct.pathTo.update}}
-        <li><a href="{{pathFor route=ct.pathTo.update}}" title="{{ct.labels.linkEdit}}">{{ct.labels.linkEdit}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.delete}}
-        <li><a href="{{pathFor route=ct.pathTo.delete}}" title="{{ct.labels.linkDelete}}">{{ct.labels.linkDelete}}</a></li>
-      {{/if}}
-      {{#if ct.pathTo.index}}
-        <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
-      {{/if}}
-    </ul>
-  {{/with}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#with item}}
+          {{#if ct.pathTo.update}}
+            <a href="{{pathFor route=ct.pathTo.update}}" class="btn btn-primary" title="{{ct.labels.linkEdit}}">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </a>
+          {{/if}}
+        {{/with}}
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if ct.pathTo.create}}
+          <a href="{{pathFor route=ct.pathTo.create}}" class="btn btn-default" title="{{ct.labels.linkCreate}}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
+    {{#with item}}
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          {{#each ct.fields}}
+          <dt>{{value}} <span class="text-muted small">({{key}})</span></dt>
+          <dd>{{ctGetFieldValue .. key}}</dd>
+          {{/each}}
+        </dl>
+      </div>
+    {{/with}}
+  </div>
 </template>

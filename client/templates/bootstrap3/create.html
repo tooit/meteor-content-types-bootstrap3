@@ -1,20 +1,30 @@
-<template name="CT_create_bootstrap3">
-  <div>{{> Template.dynamic template=template }}</div>
-</template>
-
 <template name="CT_create_bootstrap3_default">
-  {{#with meta}}
-    {{#if title}}<h2>{{{title}}}</h2>{{/if}}
-    {{#if summary}}<p>{{{summary}}}</p>{{/if}}
-    {{#if help}}<small>{{{help}}}</small>{{/if}}
-    <hr/>
-  {{/with}}
-
-  {{> quickForm collection=formCollection id=formId type=formType}}
-
-  <ul>
-    {{#if ct.pathTo.index}}
-      <li><a href="{{pathFor route=ct.pathTo.index}}" title="{{ct.labels.backToIndex}}">{{ct.labels.backToIndex}}</a></li>
-    {{/if}}
-  </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="pull-right">
+        {{#if ct.pathTo.index}}
+          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+            <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+        {{#if meta.help}}
+          <a class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{#if meta.help}}{{meta.help}}{{/if}}">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if meta.title}}<h4>{{{meta.title}}}</h4>{{/if}}
+    </div>
+    {{#if meta.summary}}<div class="panel-body"><p class="text-muted">{{{meta.summary}}}</p></div>{{/if}}
+    {{#autoForm collection=formCollection id=formId type=formType}}
+      <div class="panel-body">
+        {{> afQuickFields}}
+      </div>
+      <div class="panel-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-link">Cancel</a>
+        <button type="reset" class="btn btn-link">Reset</button>
+      </div>
+    {{/autoForm}}
+  </div>
 </template>
