@@ -10,7 +10,7 @@ Package.onUse(function(api) {
 
   var dependencies = [
     'templating',
-    'tooit:content-types@0.0.8'
+    'tooit:content-types@0.0.9'
   ];
   api.use(dependencies);
   api.imply(dependencies);
