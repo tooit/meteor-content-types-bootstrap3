@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <div class="pull-right">
         {{#if ct.pathTo.index}}
-          <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
+          <a href="{{ctPathFor route=ct.pathTo.index}}" class="btn btn-default" title="{{ct.labels.backToIndex}}">
             <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
           </a>
         {{/if}}
@@ -22,7 +22,7 @@
       </div>
       <div class="panel-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{pathFor route=ct.pathTo.index}}" class="btn btn-link">Cancel</a>
+        <a href="{{ctPathFor route=ct.pathTo.index}}" class="btn btn-link">Cancel</a>
         <button type="reset" class="btn btn-link">Reset</button>
       </div>
     {{/autoForm}}
