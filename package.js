@@ -1,7 +1,7 @@
 Package.describe({
   name: 'tooit:content-types-bootstrap3',
   summary: 'Extend tooit:content-types package with Bootstrap 3 theme.',
-  version: '0.0.2',
+  version: '0.0.3',
   git: 'https://github.com/tooit/meteor-content-types-bootstrap3.git'
 });
 
